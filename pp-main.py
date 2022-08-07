@@ -15,7 +15,11 @@ class Network(object):
     def forward(self, x):
         z = np.dot(x, self.w) + self.b
         return z
-
+    def loss(self, z, y):
+        error = z - y
+        cost = error * error
+        cost = np.mean(cost)
+        return cost
 
 def load_data():
     # 从文件导入数据
@@ -58,8 +62,10 @@ x = training_data[:, :-1]
 y = training_data[:, -1:]
 
 net = Network(13)
-x1 = x[0]
-y1 = y[0]
+# 此处可以一次性计算多个样本的预测值和损失函数
+x1 = x[0:3]
+y1 = y[0:3]
 z = net.forward(x1)
-print(z)
-print(y1)
+print('predict: ', z)
+loss = net.loss(z, y1)
+print('loss:', loss)
